@@ -1,5 +1,8 @@
-using Cinema.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+
+using Cinema.Infrastructure.Data;
+using Cinema.Core.Interfaces;
+using Cinema.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,8 @@ builder.Services.AddDbContext<CinemaDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("Cinema.Infrastructure")));
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();
 
