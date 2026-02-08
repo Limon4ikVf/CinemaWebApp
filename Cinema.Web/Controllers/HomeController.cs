@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using Cinema.Core.Entities;
+using Cinema.Core.Interfaces;
 using Cinema.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,14 +10,18 @@ namespace Cinema.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IRepository<Movie> _movieRepository;
+
+        public HomeController(ILogger<HomeController> logger, IRepository<Movie> movieRepository)
         {
             _logger = logger;
+            _movieRepository = movieRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var movies = await _movieRepository.ListAllAsync();
+            return View(movies);
         }
 
         public IActionResult Privacy()

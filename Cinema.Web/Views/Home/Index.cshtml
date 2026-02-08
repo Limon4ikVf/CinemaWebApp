@@ -1,8 +1,35 @@
-﻿@{
+﻿@using Cinema.Core.Entities
+@model IReadOnlyList<Movie>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Сьогодні в кіно</h1>
+    <p>Обирай фільм та бронюй квитки!</p>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var movie in Model)
+    {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <img src="@movie.PosterUrl" class="card-img-top" alt="@movie.Title" style="height: 400px; object-fit: cover;">
+
+                    <div class="card-body">
+                        <h5 class="card-title">@movie.Title</h5>
+                        <p class="card-text text-muted">
+                            <small>🕒 @movie.DurationMinutes хв | 📅 @movie.ReleaseDate.Year</small>
+                        </p>
+                        <p class="card-text">
+                        @(movie.Description.Length > 100 ? movie.Description.Substring(0, 100) + "..." : movie.Description)
+                        </p>
+                    </div>
+
+                    <div class="card-footer bg-white border-top-0">
+                        <a href="#" class="btn btn-primary w-100">Купити квиток</a>
+                    </div>
+                </div>
+            </div>
+    }
 </div>
