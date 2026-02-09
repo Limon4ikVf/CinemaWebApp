@@ -24,6 +24,18 @@ namespace Cinema.Web.Controllers
             return View(movies);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var movie = await _movieRepository.GetByIdAsync(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+            return View(movie);
+        }
+
         public IActionResult Privacy()
         {
             return View();

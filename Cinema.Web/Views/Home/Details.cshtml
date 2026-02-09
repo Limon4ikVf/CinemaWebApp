@@ -1,0 +1,50 @@
+﻿@using Cinema.Core.Entities
+@model Movie
+
+@{
+    ViewData["Title"] = Model.Title;
+
+    // Було: https://www.youtube.com/watch?v=CODE
+    // Стало: https://www.youtube.com/embed/CODE
+    var trailerEmbedUrl = Model.TrailerUrl?.Replace("watch?v=", "embed/");
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="@Model.PosterUrl" class="img-fluid rounded shadow-lg" alt="@Model.Title">
+
+            <div class="mt-4">
+                <h5 class="text-muted">Інформація</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Режисер:</strong> @Model.Director</li>
+                    <li class="list-group-item"><strong>Рік:</strong> @Model.ReleaseDate.Year</li>
+                    <li class="list-group-item"><strong>Тривалість:</strong> @Model.DurationMinutes хв</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <h1 class="display-4">@Model.Title</h1>
+            <hr />
+
+            <p class="lead">@Model.Description</p>
+
+            @if (!string.IsNullOrEmpty(trailerEmbedUrl))
+            {
+                    <div class="ratio ratio-16x9 mt-4 shadow">
+                        <iframe src="@trailerEmbedUrl" title="YouTube video player" allowfullscreen></iframe>
+                    </div>
+            }
+
+            <div class="mt-5 d-flex gap-3">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                    <- Назад до списку
+                </a>
+                <button class="btn btn-primary btn-lg px-5">
+                    🎫 Купити квиток (Скоро)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
