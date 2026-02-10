@@ -19,4 +19,67 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color: #0f1014;
+  color: #0f1014;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.cinema-title {
+    font-weight: 800;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #ffd700, #ff8c00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0px 4px 10px rgba(255, 215, 0, 0.3);
+}
+
+.movie-card {
+    background-color: #1a1c24;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.movie-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.movie-poster {
+    height: 450px;
+    object-fit: cover;
+    width: 100%;
+    transition: opacity 0.3s ease;
+}
+
+.movie-card:hover .movie-poster {
+    opacity: 0.9;
+}
+
+.btn-cinema {
+    background: linear-gradient(45deg, #ffc107, #ff9800);
+    border: none;
+    color: #000;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 12px 0;
+    width: 100%;
+    border-radius: 0 0 12px 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-cinema:hover {
+    background: linear-gradient(45deg, #ff9800, #ffc107);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.6);
+}
+
+.text-gold {
+    color: #ffc107;
+}
+
+.card-body {
+    padding: 1.5rem;
 }
