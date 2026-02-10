@@ -15,6 +15,7 @@ builder.Services.AddDbContext<CinemaDbContext>(options =>
         b => b.MigrationsAssembly("Cinema.Infrastructure")));
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 
 var app = builder.Build();
 

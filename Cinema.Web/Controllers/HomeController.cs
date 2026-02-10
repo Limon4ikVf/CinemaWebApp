@@ -10,9 +10,9 @@ namespace Cinema.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private readonly IRepository<Movie> _movieRepository;
+        private readonly IMovieRepository _movieRepository;
 
-        public HomeController(ILogger<HomeController> logger, IRepository<Movie> movieRepository)
+        public HomeController(ILogger<HomeController> logger, IMovieRepository movieRepository)
         {
             _logger = logger;
             _movieRepository = movieRepository;
@@ -27,7 +27,7 @@ namespace Cinema.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var movie = await _movieRepository.GetByIdAsync(id);
+            var movie = await _movieRepository.GetMovieWithDetailsAsync(id);
 
             if (movie == null)
             {

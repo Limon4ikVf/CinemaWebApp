@@ -36,14 +36,33 @@
                         <iframe src="@trailerEmbedUrl" title="YouTube video player" allowfullscreen></iframe>
                     </div>
             }
+            <div class="mt-5">
+                <h3 class="mb-3">Розклад сеансів:</h3>
 
+                @if (Model.Sessions != null && Model.Sessions.Any())
+                {
+                    <div>
+                    @foreach (var session in Model.Sessions.OrderBy(s => s.StartTime))
+                    {
+                        <button class="btn">
+                            <div>@session.StartTime.ToString("HH:mm")</div>
+                            <div>@session.StartTime.ToString("dd.MM")</div>
+                            <div>@session.Hall?.Name</div>
+                            <div>@session.Price ₴</div>
+                        </button>
+                    }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-secondary">
+                        На жаль, сеансів поки немає.
+                    </div>
+                }
             <div class="mt-5 d-flex gap-3">
                 <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-lg">
                     <- Назад до списку
                 </a>
-                <button class="btn btn-primary btn-lg px-5">
-                    🎫 Купити квиток (Скоро)
-                </button>
             </div>
         </div>
     </div>
