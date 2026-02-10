@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Net.Sockets;
 
 namespace Cinema.Core.Entities
 {

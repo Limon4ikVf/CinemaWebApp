@@ -26,12 +26,31 @@ namespace Cinema.Infrastructure.Data
                 .Property(s => s.Price)
                 .HasPrecision(18, 2);
 
-            //Налаштування Many-to-Many (Фільми <-> Жанри)
+            // Звязок Сеанс -> Фільм
+            modelBuilder.Entity<Session>()
+                .HasOne(s => s.Movie)
+                .WithMany(m => m.Sessions)
+                .HasForeignKey(s => s.MovieId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Звязок: Сеанс -> Зал
+            modelBuilder.Entity<Session>()
+                .HasOne(s => s.Hall)
+                .WithMany(h => h.Sessions)
+                .HasForeignKey(s => s.HallId);
+
+            // Звязок Сеанс -> Квиток
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Session)
+                .WithMany(s => s.Tickets)
+                .HasForeignKey(t => t.SessionId);
+
+            //Звязок Фільми <-> Жанри
             modelBuilder.Entity<Movie>()
                 .HasMany(m => m.Genres)
                 .WithMany(g => g.Movies);
 
-            // Налаштування Many-to-Many (Фільми <-> Актори)
+            // Звязок Фільми <-> Актори
             modelBuilder.Entity<Movie>()
                 .HasMany(m => m.Actors)
                 .WithMany(a => a.Movies);

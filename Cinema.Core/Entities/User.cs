@@ -1,5 +1,4 @@
-﻿using System.Net.Sockets;
-using Cinema.Core.Enums;
+﻿using Cinema.Core.Enums;
 
 namespace Cinema.Core.Entities
 {
