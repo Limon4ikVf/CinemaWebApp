@@ -8,7 +8,7 @@ namespace Cinema.Core.Entities
 
         public int Row { get; set; }
         public int SeatNumber { get; set; }
-
+        public decimal Price { get; set; }
         public DateTime PurchaseDate { get; set; } = DateTime.UtcNow;
         public TicketStatus Status { get; set; } = TicketStatus.Booked;
 

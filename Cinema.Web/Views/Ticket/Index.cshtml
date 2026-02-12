@@ -39,8 +39,7 @@
                                 <div class="seat @(isOccupied ? "occupied" : "")" 
                                      data-row="@i" 
                                      data-place="@j"
-                                     data-price="@Model.Price.ToString().Replace(",", ".")"
-                                     onclick="toggleSeat(this)">
+                                     data-price="@Model.Price.ToString().Replace(",", ".")">
                                 </div>
                     }
                         <div class="row-number">@i</div>
