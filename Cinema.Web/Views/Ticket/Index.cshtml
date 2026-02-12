@@ -1,0 +1,25 @@
+﻿@model Cinema.Core.Entities.Session
+
+@{
+    ViewData["Title"] = "Вибір місця";
+}
+
+<div class="container text-white py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-5">Вибір місця</h2>
+        <h4 class="text-gold">@Model.Movie.Title</h4>
+        <p class="lead">
+            @Model.Hall.Name • @Model.StartTime.ToString("dd MMMM HH:mm")
+        </p>
+    </div>
+
+    <div class="alert alert-info text-center">
+        Тут буде схема залу для сеансу #@Model.Id
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-controller="Home" asp-action="Details" asp-route-id="@Model.MovieId" class="btn btn-outline-light">
+            ← Назад до фільму
+        </a>
+    </div>
+</div>
