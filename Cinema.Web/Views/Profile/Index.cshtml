@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Cinema.Core.Entities.Ticket>
+
+@{
+    ViewData["Title"] = "Мої квитки";
+}
+
+<div class="container py-5">
+    <h2 class="text-white mb-4">🎫 Мої квитки</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">
+            Ви ще не купили жодного квитка. 
+            <a asp-controller="Home" asp-action="Index" class="alert-link">Вибрати фільм</a>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-1 g-4">
+            @foreach (var ticket in Model)
+            {
+                <div class="col">
+                    <div class="card bg-dark text-white border-secondary h-100">
+                        <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                            <span class="badge bg-warning text-dark">@ticket.Status</span>
+                            <small class="text-muted">Куплено: @ticket.PurchaseDate.ToLocalTime().ToString("g")</small>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-gold">@ticket.Session.Movie.Title</h5>
+                            <p class="card-text mb-1">
+                                📅 <strong>Дата:</strong> @ticket.Session.StartTime.ToString("dd MMMM yyyy") <br/>
+                                ⏰ <strong>Час:</strong> @ticket.Session.StartTime.ToString("HH:mm")
+                            </p>
+                            <hr class="border-secondary"/>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    🏛️ Зал: @ticket.Session.Hall.Name <br/>
+                                    💺 <strong>Ряд @ticket.Row, Місце @ticket.SeatNumber</strong>
+                                </div>
+                                <div class="fs-4 fw-bold text-success">
+                                    @ticket.Price.ToString("0") ₴
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
