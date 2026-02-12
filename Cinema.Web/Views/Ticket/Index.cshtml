@@ -2,8 +2,8 @@
 @using Cinema.Core.Entities
 @{
     ViewData["Title"] = "Вибір місця";
-    int rows = 8;
-    int seatsPerRow = 10;
+    int rows = Model.Hall.Rows;
+    int seatsPerRow = Model.Hall.SeatsPerRow;
 
     var soldTickets = ViewBag.SoldTickets as List<Ticket> ?? new List<Ticket>();
 }
