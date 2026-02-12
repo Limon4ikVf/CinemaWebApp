@@ -1,9 +1,11 @@
 ﻿@model Cinema.Core.Entities.Session
-
+@using Cinema.Core.Entities
 @{
     ViewData["Title"] = "Вибір місця";
     int rows = 8;
     int seatsPerRow = 10;
+
+    var soldTickets = ViewBag.SoldTickets as List<Ticket> ?? new List<Ticket>();
 }
 
 <div class="container py-5 mb-5">
@@ -34,13 +36,13 @@
                         <div class="row-number">@i</div>
                     @for (int j = 1; j <= seatsPerRow; j++)
                     {
-                        var isOccupied = false; 
+                        bool isOccupied = soldTickets.Any(t => t.Row == i && t.SeatNumber == j);
 
-                                <div class="seat @(isOccupied ? "occupied" : "")" 
-                                     data-row="@i" 
-                                     data-place="@j"
-                                     data-price="@Model.Price.ToString().Replace(",", ".")">
-                                </div>
+                        <div class="seat @(isOccupied ? "occupied" : "")" 
+                                data-row="@i" 
+                                data-place="@j"
+                                data-price="@Model.Price.ToString().Replace(",", ".")">
+                        </div>
                     }
                         <div class="row-number">@i</div>
                     </div>

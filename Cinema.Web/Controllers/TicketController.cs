@@ -29,6 +29,12 @@ namespace Cinema.Web.Controllers
                 return NotFound();
             }
 
+            var soldTickets = await _context.Tickets
+                .Where(t => t.SessionId == sessionId)
+                .ToListAsync();
+
+            ViewBag.SoldTickets = soldTickets;
+
             return View(session);
         }
 
