@@ -90,10 +90,11 @@ a {
 }
 
 .movie-poster {
-    height: 450px;
-    object-fit: cover;
     width: 100%;
-    transition: opacity var(--transition);
+    aspect-ratio: 2 / 3; /* Жорстко задаємо пропорцію класичного постера */
+    object-fit: cover; /* Заповнює блок, але завдяки правильній пропорції не обрізає важливе */
+    object-position: center;
+    border-radius: 6px 6px 0 0; /* Закруглені кути зверху, якщо це картка */
 }
 
 .movie-card:hover .movie-poster {
