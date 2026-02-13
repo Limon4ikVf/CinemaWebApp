@@ -1,0 +1,35 @@
+﻿@model Cinema.Web.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Вхід";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card bg-dark text-white border-secondary shadow-lg" style="width: 400px;">
+        <div class="card-header border-secondary text-center">
+            <h3>🔐 Вхід</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Пароль</label>
+                    <input asp-for="Password" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-warning w-100 fw-bold">Увійти</button>
+            </form>
+        </div>
+        <div class="card-footer border-secondary text-center">
+            <small>Немає акаунту? <a asp-action="Register" class="text-warning">Зареєструватись</a></small>
+        </div>
+    </div>
+</div>

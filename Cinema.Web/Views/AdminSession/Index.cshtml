@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Cinema.Core.Entities.Session>
+
+@{
+    ViewData["Title"] = "Адмінка - Сеанси";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white">📅 Розклад сеансів</h2>
+        <a asp-action="Create" class="btn btn-primary fw-bold">+ Додати сеанс</a>
+    </div>
+
+    <div class="card bg-dark text-white border-secondary mb-4 shadow">
+        <div class="card-body">
+            <form asp-action="Index" method="get" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label text-warning fw-bold">Фільтр по фільму</label>
+                    <select name="movieId" class="form-select bg-secondary text-white border-0" asp-items="ViewBag.Movies">
+                        <option value="">-- Всі фільми --</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label text-warning fw-bold">Фільтр по залу</label>
+                    <select name="hallId" class="form-select bg-secondary text-white border-0" asp-items="ViewBag.Halls">
+                        <option value="">-- Всі зали --</option>
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-warning fw-bold text-dark w-100">Застосувати</button>
+                    <a asp-action="Index" class="btn btn-outline-light">Скинути</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card bg-dark text-white border-secondary shadow">
+        <div class="card-body p-0">
+            <table class="table table-dark table-hover mb-0 text-center align-middle">
+                <thead>
+                    <tr class="text-warning">
+                        <th>Фільм</th>
+                        <th>Зал</th>
+                        <th>Дата та Час</th>
+                        <th>Ціна квитка</th>
+                        <th>Статус</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var session in Model)
+                    {
+                        bool isPast = session.StartTime <= DateTime.Now;
+
+                        <tr class="@(isPast ? "opacity-50" : "")" 
+                            style="@(isPast ? "" : "cursor: pointer;")" 
+                            onclick="@(isPast ? "return false;" : $"window.location.href='{Url.Action("Index", "Ticket", new { sessionId = session.Id })}'")">
+                            
+                            <td class="fw-bold text-start">@session.Movie?.Title</td>
+                            <td>@session.Hall?.Name</td>
+                            <td>@session.StartTime.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@session.Price ₴</td>
+                            <td>
+                                @if (isPast)
+                                {
+                                    <span class="badge bg-secondary">Завершено</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Активний</span>
+                                }
+                            </td>
+                            <td>
+                                @if (isPast)
+                                {
+                                    <button class="btn btn-sm btn-outline-secondary" disabled onclick="event.stopPropagation();">Редагувати</button>
+                                }
+                                else
+                                {
+                                    <a asp-action="Edit" asp-route-id="@session.Id" class="btn btn-sm btn-outline-warning" onclick="event.stopPropagation();">Редагувати</a>
+                                }
+
+                                <form asp-action="Delete" asp-route-id="@session.Id" method="post" class="d-inline" onsubmit="event.stopPropagation(); return confirm('Ви впевнені, що хочете видалити цей сеанс? Клієнти втратять до нього доступ!');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation();">Видалити</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

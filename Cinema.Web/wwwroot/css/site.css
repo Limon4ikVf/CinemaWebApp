@@ -1,22 +1,317 @@
+:root {
+    --bg-body: #0f1014;
+    --bg-card: #1a1c24;
+    --bg-glass: rgba(255, 255, 255, 0.05);
+    --bg-glass-dark: rgba(0, 0, 0, 0.6);
+    --text-main: #e0e0e0;
+    --text-white: #ffffff;
+    --text-black: #000000;
+    --color-gold: #ffc107;
+    --color-gold-dark: #ff9800;
+    --border-subtle: rgba(255, 255, 255, 0.1);
+    --border-radius: 12px;
+    --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.7);
+    --transition: 0.3s;
+}
+
+/* Base */
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 10px;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-family: 'Segoe UI', sans-serif;
+    padding-top: 70px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color var(--transition);
+}
+
+/* Components */
+.text-gold {
+    color: var(--color-gold) !important;
+}
+
+.cinema-title {
+    font-weight: 800;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #ffd700, #ff8c00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Buttons */
+.btn-cinema {
+    background: linear-gradient(45deg, var(--color-gold), var(--color-gold-dark));
+    border: none;
+    color: var(--text-black);
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 12px 0;
+    width: 100%;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    transition: all var(--transition);
+}
+
+.btn-cinema:hover {
+    background: linear-gradient(45deg, var(--color-gold-dark), var(--color-gold));
+    color: var(--text-white);
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.6);
+}
+
+/* Index cards */
+.movie-card {
+    background-color: var(--bg-card);
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition);
+    height: 100%;
+}
+
+.movie-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--color-gold);
+}
+
+.movie-poster {
+    width: 100%;
+    aspect-ratio: 2 / 3; /* Жорстко задаємо пропорцію класичного постера */
+    object-fit: cover; /* Заповнює блок, але завдяки правильній пропорції не обрізає важливе */
+    object-position: center;
+    border-radius: 6px 6px 0 0; /* Закруглені кути зверху, якщо це картка */
+}
+
+.movie-card:hover .movie-poster {
+    opacity: 0.9;
+}
+
+/* details page */
+.backdrop-container {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    padding: 60px 0;
+}
+
+.backdrop-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center top;
+    filter: blur(60px) brightness(0.25);
+    z-index: 0;
+    transform: scale(1.1);
+}
+
+.movie-content {
+    position: relative;
+    z-index: 1;
+}
+
+.movie-info-card {
+    background: var(--bg-glass-dark);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-subtle);
+}
+
+.movie-info-item {
+    background-color: transparent !important;
+    color: var(--text-main);
+    border: none;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 12px 0;
+}
+
+.movie-info-item:last-child {
+    border-bottom: none;
+}
+
+/* Session cards */
+.session-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;
+    padding: 12px;
+    background-color: var(--bg-glass);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--border-radius);
+    transition: all var(--transition);
+}
+
+.session-card:hover {
+    background-color: var(--color-gold);
+    border-color: var(--color-gold);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 193, 7, 0.3);
+}
+
+.session-card:hover div,
+.session-card:hover .text-gold,
+.session-card:hover .text-white {
+    color: var(--text-black) !important;
+}
+
+/* Navbar */
+.custom-navbar {
+    background: rgba(15, 16, 20, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.nav-link:hover {
+    color: var(--color-gold) !important;
+}
+
+/* Ticket page */
+
+/* Screen */
+.screen-container {
+    perspective: 1000px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.screen {
+    width: 80%;
+    height: 60px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0));
+    transform: rotateX(-15deg) scale(0.9);
+    box-shadow: 0 20px 50px rgba(255, 255, 255, 0.2);
+    border-radius: 10px 10px 50px 50px;
+    opacity: 0.8;
+}
+
+/* Place grid */
+.hall-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.seat-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.row-number {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    width: 30px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+/* Chair */
+.seat {
+    width: 30px;
+    height: 30px;
+    background-color: #333;
+    border-radius: 6px 6px 2px 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    border-bottom: 3px solid #555;
+}
+
+.seat:not(.occupied):hover {
+    background-color: #555;
+    transform: scale(1.1);
+}
+
+.seat.selected {
+    background-color: var(--color-gold);
+    border-bottom-color: var(--color-gold-dark);
+    box-shadow: 0 0 10px var(--color-gold);
+}
+
+
+.seat.occupied {
+    background-color: #b02a37;
+    border-bottom-color: #842029;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+
+.booking-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(15, 16, 20, 0.95);
+    border-top: 1px solid var(--color-gold);
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.booking-panel.active {
+    transform: translateY(0);
+}
+
+body {
+    padding-top: 70px;
+    background-color: #0f0f0f;
+}
+
+.bg-main-nav {
+    background-color: rgba(15, 15, 15, 0.9) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-nav-custom {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 5px 15px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-nav-custom:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.nav-link {
+    color: rgba(255,255,255,0.7) !important;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #ffc107 !important;
+}
+
+footer {
+    margin-top: auto;
+    margin-bottom: 0 !important;
 }

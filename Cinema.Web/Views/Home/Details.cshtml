@@ -1,0 +1,124 @@
+﻿@using Cinema.Core.Entities
+@model Movie
+
+@{
+    ViewData["Title"] = Model.Title;
+
+    // Було: https://www.youtube.com/watch?v=CODE
+    // Стало: https://www.youtube.com/embed/CODE
+    var trailerEmbedUrl = Model.TrailerUrl?.Replace("watch?v=", "embed/");
+
+    var groupedSessions = ViewBag.GroupedSessions as IEnumerable<IGrouping<DateTime, Session>>;
+}
+
+<div class="backdrop-container">
+    <div class="backdrop-image" style="background-image: url('@Model.PosterUrl');"></div>
+
+    <div class="container movie-content">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <img src="@Model.PosterUrl" class="img-fluid rounded shadow-lg border border-secondary" alt="@Model.Title">
+
+                <div class="mt-4 p-3 rounded" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);">
+                    <h5 class="text-gold text-uppercase fw-bold mb-3">Інформація</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-transparent text-white border-secondary">
+                            <span class="text-muted">🎬 Режисер:</span> <span class="fw-bold">@Model.Director</span>
+                        </li>
+                        <li class="list-group-item bg-transparent text-white border-secondary">
+                            <span class="text-muted">📅 Рік:</span> <span class="fw-bold">@Model.ReleaseDate.Year</span>
+                        </li>
+                        <li class="list-group-item bg-transparent text-white border-secondary">
+                            <span class="text-muted">🎭 Жанри:</span> 
+                            <span class="fw-bold">
+                                @if (Model.Genres != null && Model.Genres.Any())
+                                {
+                                    @string.Join(", ", Model.Genres.Select(g => g.Name))
+                                }
+                                else
+                                {
+                                    <span class="text-white-50 fw-normal">Не вказано</span>
+                                }
+                            </span>
+                        </li>
+                        <li class="list-group-item bg-transparent text-white border-0">
+                            <span class="text-muted">⏱ Тривалість:</span> <span class="fw-bold">@Model.DurationMinutes хв</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-8 text-white ps-md-5">
+                <h1 class="display-3 fw-bold" style="text-shadow: 0 2px 10px rgba(0,0,0,0.5);">@Model.Title</h1>
+                <hr class="border-secondary opacity-50" />
+
+                <p class="lead opacity-75">@Model.Description</p>
+
+                @if (!string.IsNullOrEmpty(trailerEmbedUrl))
+                {
+                    <div class="ratio ratio-16x9 mt-4 shadow-lg rounded overflow-hidden border border-secondary border-opacity-25">
+                        <iframe src="@trailerEmbedUrl" title="YouTube video player" allowfullscreen style="border:0;"></iframe>
+                    </div>
+                }
+
+                <div class="mt-5">
+                    <h3 class="mb-4"><span class="text-gold">🎟 Розклад</span> сеансів:</h3>
+
+                    @if (groupedSessions != null && groupedSessions.Any())
+                    {
+                        @foreach (var group in groupedSessions)
+                        {
+                            DateTime date = group.Key;
+                            bool isToday = date == DateTime.Today;
+                            bool isTomorrow = date == DateTime.Today.AddDays(1);
+
+                            var culture = new System.Globalization.CultureInfo("uk-UA");
+                            string dateTitle;
+                            if (isToday)
+                            {
+                                dateTitle = "Сьогодні";
+                            }
+                            else if (isTomorrow)
+                            {
+                                dateTitle = "Завтра";
+                            }
+                            else
+                            {
+                                dateTitle = date.ToString("dd MMMM (dddd)", culture);
+                            }
+
+                            <div class="mb-4 p-3 rounded" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);">
+                                <h5 class="text-white border-bottom border-secondary pb-2 mb-3">
+                                    <span class="text-gold">📅</span> @dateTitle
+                                </h5>
+                                
+                                <div class="d-flex flex-wrap gap-3">
+                                    @foreach (var session in group)
+                                    {
+                                        <a asp-controller="Ticket" asp-action="Index" asp-route-sessionId="@session.Id" class="session-card text-decoration-none p-2 text-center">
+                                            <div class="fs-4 fw-bold text-white my-1">@session.StartTime.ToString("HH:mm")</div>
+                                            <div class="small text-gold">@session.Hall?.Name</div>
+                                            <div class="badge bg-warning text-dark mt-2">@session.Price ₴</div>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-dark border-secondary">
+                            На жаль, сеансів поки немає.
+                        </div>
+                    }
+                </div>
+
+                <div class="mt-5">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-light rounded-pill px-4">
+                        ← Назад до списку
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
