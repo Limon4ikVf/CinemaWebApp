@@ -17,13 +17,29 @@ namespace Cinema.Web.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(int? movieId, int? hallId)
         {
-            var sessions = await _context.Sessions
+            var query = _context.Sessions
                 .Include(s => s.Movie)
                 .Include(s => s.Hall)
-                .OrderByDescending(s => s.StartTime)
-                .ToListAsync();
+                .AsQueryable();
+
+
+            if (movieId.HasValue)
+            {
+                query = query.Where(s => s.MovieId == movieId.Value);
+            }
+
+            if (hallId.HasValue)
+            {
+                query = query.Where(s => s.HallId == hallId.Value);
+            }
+
+            var sessions = await query.OrderByDescending(s => s.StartTime).ToListAsync();
+
+            ViewBag.Movies = new SelectList(await _context.Movies.ToListAsync(), "Id", "Title", movieId);
+            ViewBag.Halls = new SelectList(await _context.Halls.ToListAsync(), "Id", "Name", hallId);
 
             return View(sessions);
         }

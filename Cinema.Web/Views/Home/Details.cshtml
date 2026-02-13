@@ -28,6 +28,19 @@
                         <li class="list-group-item bg-transparent text-white border-secondary">
                             <span class="text-muted">📅 Рік:</span> <span class="fw-bold">@Model.ReleaseDate.Year</span>
                         </li>
+                        <li class="list-group-item bg-transparent text-white border-secondary">
+                            <span class="text-muted">🎭 Жанри:</span> 
+                            <span class="fw-bold">
+                                @if (Model.Genres != null && Model.Genres.Any())
+                                {
+                                    @string.Join(", ", Model.Genres.Select(g => g.Name))
+                                }
+                                else
+                                {
+                                    <span class="text-white-50 fw-normal">Не вказано</span>
+                                }
+                            </span>
+                        </li>
                         <li class="list-group-item bg-transparent text-white border-0">
                             <span class="text-muted">⏱ Тривалість:</span> <span class="fw-bold">@Model.DurationMinutes хв</span>
                         </li>
