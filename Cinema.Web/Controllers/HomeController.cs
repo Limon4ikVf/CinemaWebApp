@@ -33,6 +33,15 @@ namespace Cinema.Web.Controllers
             {
                 return NotFound();
             }
+
+            var groupedSessions = movie.Sessions?
+                .Where(s => s.StartTime >= DateTime.Today)
+                .OrderBy(s => s.StartTime)
+                .GroupBy(s => s.StartTime.Date)
+                .ToList();
+
+            ViewBag.GroupedSessions = groupedSessions;
+
             return View(movie);
         }
 
