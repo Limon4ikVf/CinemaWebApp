@@ -42,31 +42,43 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title text-gold">@ticket.Session.Movie.Title</h5>
-                            <p class="card-text mb-1">
-                                📅 <strong>Дата:</strong> @ticket.Session.StartTime.ToString("dd MMMM yyyy") <br/>
-                                ⏰ <strong>Час:</strong> @ticket.Session.StartTime.ToString("HH:mm")
-                            </p>
-                            <hr class="border-secondary"/>
-                            <div class="d-flex justify-content-between align-items-end">
-                                <div>
-                                    🏛️ Зал: @ticket.Session.Hall.Name <br/>
-                                    💺 <span class="fs-5"><strong>Ряд @ticket.Row, Місце @ticket.SeatNumber</strong></span>
+    
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <p class="card-text mb-1">
+                                        📅 <strong>Дата:</strong> @ticket.Session.StartTime.ToString("dd MMMM yyyy")
+                                    </p>
+                                    <p class="card-text mb-1">
+                                        ⏰ <strong>Час:</strong> @ticket.Session.StartTime.ToString("HH:mm")
+                                    </p>
+                                    <p class="card-text mb-0 text-muted">
+                                        👤 Клієнт: <span class="text-white">@ViewBag.FullName</span>
+                                    </p>
                                 </div>
-                                <div class="text-end">
-                                    <div class="fs-3 fw-bold text-warning mb-2">
+                                <div class="col-md-5 text-end">
+                                     <div class="fs-3 fw-bold text-warning">
                                         @ticket.Price.ToString("0") ₴
                                     </div>
-                                    
-                                    @if (!isPast)
-                                    {
-                                        <form asp-controller="Ticket" asp-action="CancelBooking" asp-route-ticketId="@ticket.Id" method="post" 
-                                              onsubmit="return confirm('Ви впевнені, що хочете скасувати бронювання цього місця?');">
-                                            <button type="submit" class="btn btn-outline-danger">
-                                                Скасувати бронювання
-                                            </button>
-                                        </form>
-                                    }
                                 </div>
+                            </div>
+    
+                            <hr class="border-secondary opacity-50 my-3"/>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-muted small text-uppercase">Місце в залі</span><br/>
+                                    🏛️ @ticket.Session.Hall.Name | 💺 <strong>Ряд @ticket.Row, Місце @ticket.SeatNumber</strong>
+                                </div>
+        
+                                @if (!isPast)
+                                {
+                                    <form asp-controller="Ticket" asp-action="CancelBooking" asp-route-ticketId="@ticket.Id" method="post" 
+                                          onsubmit="return confirm('Ви впевнені, що хочете скасувати бронювання?');">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                                            Скасувати
+                                        </button>
+                                    </form>
+                                }
                             </div>
                         </div>
                     </div>

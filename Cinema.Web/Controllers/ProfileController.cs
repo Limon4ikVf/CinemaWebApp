@@ -27,13 +27,21 @@ namespace Cinema.Web.Controllers
 
             int currentUserId = int.Parse(userIdString);
 
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == currentUserId);
+
+            if (user != null)
+            {
+                ViewBag.FullName = $"{user.FirstName} {user.LastName}";
+            }
+
             var tickets = await _context.Tickets
                 .Include(t => t.Session)
                     .ThenInclude(s => s.Movie)
                 .Include(t => t.Session)
                     .ThenInclude(s => s.Hall)
                 .Where(t => t.UserId == currentUserId)
-                .OrderByDescending(t => t.PurchaseDate)
+                .OrderByDescending(t => t.Session.StartTime)
                 .ToListAsync();
 
             return View(tickets);
