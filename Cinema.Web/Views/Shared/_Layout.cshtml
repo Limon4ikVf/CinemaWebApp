@@ -36,9 +36,14 @@
                         {
                             @if (User.IsInRole("Admin"))
                             {
-                                <li class="nav-item">
+                                <li class="nav-item ms-2">
                                     <a class="nav-link text-danger fw-bold border border-danger rounded px-2" asp-controller="Admin" asp-action="Index">
-                                        ⚙️ Адмінка
+                                        🎬 Фільми
+                                    </a>
+                                </li>
+                                <li class="nav-item ms-2">
+                                    <a class="nav-link text-primary fw-bold border border-primary rounded px-2" asp-controller="AdminSession" asp-action="Index">
+                                        📅 Сеанси
                                     </a>
                                 </li>
                             }

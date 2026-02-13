@@ -1,0 +1,58 @@
+﻿@model Cinema.Core.Entities.Session
+
+@{
+    ViewData["Title"] = "Створити сеанс";
+}
+
+<div class="container py-4" style="max-width: 600px;">
+    <h2 class="text-white mb-4">⏰ Додати новий сеанс</h2>
+
+    <div class="card bg-dark text-white border-secondary shadow">
+        <div class="card-body p-4">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="MovieId" class="form-label text-warning fw-bold">Оберіть фільм</label>
+                    <select asp-for="MovieId" class="form-select bg-secondary text-white border-0" asp-items="ViewBag.Movies">
+                        <option value="">-- Виберіть фільм --</option>
+                    </select>
+                    <span asp-validation-for="MovieId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="HallId" class="form-label text-warning fw-bold">Оберіть зал</label>
+                    <select asp-for="HallId" class="form-select bg-secondary text-white border-0" asp-items="ViewBag.Halls">
+                        <option value="">-- Виберіть зал --</option>
+                    </select>
+                    <span asp-validation-for="HallId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="StartTime" class="form-label text-warning fw-bold">Дата і час початку</label>
+                    <input asp-for="StartTime" type="datetime-local" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Price" class="form-label text-warning fw-bold">Базова ціна квитка (грн)</label>
+                    <input asp-for="Price" type="number" step="0.01" class="form-control bg-secondary text-white border-0" placeholder="Наприклад: 150" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <hr class="border-secondary" />
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-light">Скасувати</a>
+                    <button type="submit" class="btn btn-primary fw-bold px-4">Зберегти сеанс</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
