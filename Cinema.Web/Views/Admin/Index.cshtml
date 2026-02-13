@@ -33,8 +33,11 @@
                             <td class="align-middle fw-bold">@movie.Title</td>
                             <td class="align-middle">@movie.DurationMinutes хв</td>
                             <td class="align-middle">
-                                <a href="#" class="btn btn-sm btn-outline-warning">Редагувати</a>
-                                <a href="#" class="btn btn-sm btn-outline-danger">Видалити</a>
+                                <a asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-sm btn-outline-warning">Редагувати</a>
+    
+                                <form asp-action="Delete" asp-route-id="@movie.Id" method="post" class="d-inline" onsubmit="return confirm('Ви впевнені, що хочете назавжди видалити фільм «@movie.Title»?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Видалити</button>
+                                </form>
                             </td>
                         </tr>
                     }

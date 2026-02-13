@@ -1,0 +1,85 @@
+﻿@model Cinema.Core.Entities.Movie
+
+@{
+    ViewData["Title"] = "Редагувати фільм";
+    var movieGenreIds = Model.Genres?.Select(g => g.Id).ToList() ?? new List<int>();
+}
+
+<div class="container py-4" style="max-width: 800px;">
+    <h2 class="text-white mb-4">✏️ Редагувати: @Model.Title</h2>
+
+    <div class="card bg-dark text-white border-secondary shadow">
+        <div class="card-body p-4">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label text-warning fw-bold">Назва фільму</label>
+                    <input asp-for="Title" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label text-warning fw-bold">Опис</label>
+                    <textarea asp-for="Description" class="form-control bg-secondary text-white border-0" rows="4"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DurationMinutes" class="form-label text-warning fw-bold">Тривалість (хв)</label>
+                        <input asp-for="DurationMinutes" type="number" class="form-control bg-secondary text-white border-0" />
+                        <span asp-validation-for="DurationMinutes" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ReleaseDate" class="form-label text-warning fw-bold">Дата виходу</label>
+                        <input asp-for="ReleaseDate" type="date" class="form-control bg-secondary text-white border-0" />
+                        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Director" class="form-label text-warning fw-bold">Режисер</label>
+                    <input asp-for="Director" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="Director" class="text-danger"></span>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label text-warning fw-bold d-block mb-3">Жанри</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (var genre in ViewBag.Genres)
+                        {
+                            bool isChecked = movieGenreIds.Contains(genre.Id);
+
+                            <input type="checkbox" class="btn-check" name="selectedGenreIds" id="genre_@(genre.Id)" value="@genre.Id" autocomplete="off" @(isChecked ? "checked" : "")>
+                            <label class="btn btn-outline-warning rounded-pill px-3 fw-bold" for="genre_@(genre.Id)">
+                            @genre.Name
+                            </label>
+                        }
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PosterUrl" class="form-label text-warning fw-bold">Постер (URL)</label>
+                    <input asp-for="PosterUrl" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="PosterUrl" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="TrailerUrl" class="form-label text-warning fw-bold">Трейлер (URL)</label>
+                    <input asp-for="TrailerUrl" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="TrailerUrl" class="text-danger"></span>
+                </div>
+
+                <hr class="border-secondary" />
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-light">Скасувати</a>
+                    <button type="submit" class="btn btn-warning fw-bold px-4 text-dark">Зберегти зміни</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
