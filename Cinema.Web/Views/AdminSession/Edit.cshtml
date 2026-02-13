@@ -1,0 +1,54 @@
+﻿@model Cinema.Core.Entities.Session
+
+@{
+    ViewData["Title"] = "Редагувати сеанс";
+}
+
+<div class="container py-4" style="max-width: 600px;">
+    <h2 class="text-white mb-4">✏️ Редагувати сеанс</h2>
+
+    <div class="card bg-dark text-white border-secondary shadow">
+        <div class="card-body p-4">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="MovieId" class="form-label text-warning fw-bold">Фільм</label>
+                    <select asp-for="MovieId" class="form-select bg-secondary text-white border-0" asp-items="ViewBag.Movies"></select>
+                    <span asp-validation-for="MovieId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="HallId" class="form-label text-warning fw-bold">Зал</label>
+                    <select asp-for="HallId" class="form-select bg-secondary text-white border-0" asp-items="ViewBag.Halls"></select>
+                    <span asp-validation-for="HallId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="StartTime" class="form-label text-warning fw-bold">Дата і час</label>
+                    <input asp-for="StartTime" type="datetime-local" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Price" class="form-label text-warning fw-bold">Ціна квитка (грн)</label>
+                    <input asp-for="Price" type="number" step="0.01" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <hr class="border-secondary" />
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-light">Скасувати</a>
+                    <button type="submit" class="btn btn-warning fw-bold px-4 text-dark">Зберегти зміни</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -31,7 +31,11 @@
                             <td>@session.StartTime.ToString("dd.MM.yyyy HH:mm")</td>
                             <td>@session.Price ₴</td>
                             <td>
-                                <button class="btn btn-sm btn-outline-secondary" disabled>Редагувати</button>
+                                <a asp-action="Edit" asp-route-id="@session.Id" class="btn btn-sm btn-outline-warning">Редагувати</a>
+
+                                <form asp-action="Delete" asp-route-id="@session.Id" method="post" class="d-inline" onsubmit="return confirm('Ви впевнені, що хочете видалити цей сеанс? Клієнти втратять до нього доступ!');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Видалити</button>
+                                </form>
                             </td>
                         </tr>
                     }
