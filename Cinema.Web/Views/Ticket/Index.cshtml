@@ -1,7 +1,7 @@
 ﻿@model Cinema.Core.Entities.Session
 @using Cinema.Core.Entities
 @{
-    ViewData["Title"] = "Вибір місця";
+    ViewData["Title"] = "Бронювання місць";
     int rows = Model.Hall.Rows;
     int seatsPerRow = Model.Hall.SeatsPerRow;
 
@@ -9,12 +9,17 @@
 }
 
 <div class="container py-5 mb-5">
-    <div class="text-center mb-5">
+    <div class="text-center mb-4">
         <h4 class="text-muted text-uppercase small">Вибір місця</h4>
         <h2 class="text-white display-6 fw-bold">@Model.Movie.Title</h2>
         <p class="text-gold">
             @Model.StartTime.ToString("dd MMMM HH:mm") • @Model.Hall.Name
         </p>
+    </div>
+
+    <div class="alert alert-warning text-center mx-auto mb-5" style="max-width: 600px; background-color: rgba(255, 193, 7, 0.1); border-color: rgba(255, 193, 7, 0.3); color: #ffc107;">
+        <i class="bi bi-info-circle me-2"></i>
+        <strong>Увага!</strong> Ви здійснюєте бронювання квитків. Оплатити та забрати фізичні квитки необхідно <strong>на касі кінотеатру не пізніше ніж за 15 хвилин</strong> до початку сеансу.
     </div>
 
     <div class="d-flex justify-content-center gap-4 mb-5 text-small text-muted">
@@ -32,20 +37,20 @@
         <div class="hall-grid">
             @for (int i = 1; i <= rows; i++)
             {
-                    <div class="seat-row">
-                        <div class="row-number">@i</div>
+                <div class="seat-row">
+                    <div class="row-number">@i</div>
                     @for (int j = 1; j <= seatsPerRow; j++)
                     {
                         bool isOccupied = soldTickets.Any(t => t.Row == i && t.SeatNumber == j);
 
                         <div class="seat @(isOccupied ? "occupied" : "")" 
-                                data-row="@i" 
-                                data-place="@j"
-                                data-price="@Model.Price.ToString().Replace(",", ".")">
+                             data-row="@i" 
+                             data-place="@j"
+                             data-price="@Model.Price.ToString().Replace(",", ".")">
                         </div>
                     }
-                        <div class="row-number">@i</div>
-                    </div>
+                    <div class="row-number">@i</div>
+                </div>
             }
         </div>
     </div>
@@ -55,14 +60,14 @@
     <div class="container d-flex justify-content-between align-items-center">
         <div>
             <div class="text-muted small">Вибрано місць: <span id="count" class="text-white fw-bold">0</span></div>
-            <div class="text-gold fs-4 fw-bold"><span id="total">0</span> ₴</div>
+            <div class="text-gold fs-4 fw-bold">До сплати: <span id="total">0</span> ₴</div>
         </div>
-        <button class="btn btn-cinema px-5 rounded-pill" onclick="bookTickets()">
-            Купити квитки
+        <button class="btn btn-warning px-5 rounded-pill fw-bold text-dark" onclick="bookTickets()">
+            Забронювати місця
         </button>
     </div>
 </div>
 
 @section Scripts {
-        <script src="~/js/ticket.js"></script>
+    <script src="~/js/ticket.js"></script>
 }

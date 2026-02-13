@@ -1,29 +1,44 @@
 ﻿@model IEnumerable<Cinema.Core.Entities.Ticket>
 
 @{
-    ViewData["Title"] = "Мої квитки";
+    ViewData["Title"] = "Мої бронювання";
 }
 
 <div class="container py-5">
-    <h2 class="text-white mb-4">🎫 Мої квитки</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white">🎟 Мої бронювання</h2>
+    </div>
 
     @if (!Model.Any())
     {
         <div class="alert alert-warning">
-            Ви ще не купили жодного квитка. 
+            У вас немає активних бронювань. 
             <a asp-controller="Home" asp-action="Index" class="alert-link">Вибрати фільм</a>
         </div>
     }
     else
     {
+        <div class="alert alert-warning mb-4" style="background-color: rgba(255, 193, 7, 0.1); border-color: rgba(255, 193, 7, 0.3); color: #ffc107;">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong>Нагадуємо:</strong> оплата заброньованих квитків здійснюється <strong>на касі кінотеатру</strong>. Будь ласка, викупіть свої квитки не пізніше ніж за 15 хвилин до початку сеансу.
+        </div>
+
         <div class="row row-cols-1 row-cols-md-1 g-4">
             @foreach (var ticket in Model)
             {
+                bool isPast = ticket.Session.StartTime <= DateTime.UtcNow;
+
                 <div class="col">
-                    <div class="card bg-dark text-white border-secondary h-100">
+                    <div class="card bg-dark text-white border-secondary h-100 @(isPast ? "opacity-50" : "")">
                         <div class="card-header border-secondary d-flex justify-content-between align-items-center">
-                            <span class="badge bg-warning text-dark">@ticket.Status</span>
-                            <small class="text-muted">Куплено: @ticket.PurchaseDate.ToLocalTime().ToString("g")</small>
+                            <div>
+                                <span class="badge bg-warning text-dark">@ticket.Status</span>
+                                @if (isPast)
+                                {
+                                    <span class="badge bg-secondary ms-2">Сеанс завершено</span>
+                                }
+                            </div>
+                            <small class="text-muted">Заброньовано: @ticket.PurchaseDate.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</small>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title text-gold">@ticket.Session.Movie.Title</h5>
@@ -32,13 +47,25 @@
                                 ⏰ <strong>Час:</strong> @ticket.Session.StartTime.ToString("HH:mm")
                             </p>
                             <hr class="border-secondary"/>
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between align-items-end">
                                 <div>
                                     🏛️ Зал: @ticket.Session.Hall.Name <br/>
-                                    💺 <strong>Ряд @ticket.Row, Місце @ticket.SeatNumber</strong>
+                                    💺 <span class="fs-5"><strong>Ряд @ticket.Row, Місце @ticket.SeatNumber</strong></span>
                                 </div>
-                                <div class="fs-4 fw-bold text-success">
-                                    @ticket.Price.ToString("0") ₴
+                                <div class="text-end">
+                                    <div class="fs-3 fw-bold text-warning mb-2">
+                                        @ticket.Price.ToString("0") ₴
+                                    </div>
+                                    
+                                    @if (!isPast)
+                                    {
+                                        <form asp-controller="Ticket" asp-action="CancelBooking" asp-route-ticketId="@ticket.Id" method="post" 
+                                              onsubmit="return confirm('Ви впевнені, що хочете скасувати бронювання цього місця?');">
+                                            <button type="submit" class="btn btn-outline-danger">
+                                                Скасувати бронювання
+                                            </button>
+                                        </form>
+                                    }
                                 </div>
                             </div>
                         </div>

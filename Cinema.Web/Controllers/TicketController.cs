@@ -1,4 +1,5 @@
-﻿using Cinema.Core.Entities;
+﻿using System.Security.Claims;
+using Cinema.Core.Entities;
 using Cinema.Core.Enums;
 using Cinema.Infrastructure.Data;
 using Cinema.Web.Models;
@@ -87,6 +88,35 @@ namespace Cinema.Web.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Квитки успішно заброньовано!" });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelBooking(int ticketId)
+        {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdString, out int userId))
+            {
+                return Unauthorized();
+            }
+
+            var ticket = await _context.Tickets
+                .Include(t => t.Session)
+                .FirstOrDefaultAsync(t => t.Id == ticketId && t.UserId == userId);
+
+            if (ticket == null)
+            {
+                return NotFound("Квиток не знайдено.");
+            }
+
+            if (ticket.Session.StartTime <= DateTime.UtcNow)
+            {
+                return BadRequest("Неможливо скасувати бронювання на сеанс, який вже розпочався або завершився.");
+            }
+
+            _context.Tickets.Remove(ticket);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Profile");
         }
     }
 }
