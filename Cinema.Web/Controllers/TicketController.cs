@@ -61,7 +61,12 @@ namespace Cinema.Web.Controllers
                 }
             }
 
-            int tempUserid = 1;
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized("Будь ласка, увійдіть у систему, щоб купити квиток.");
+            }
+            var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            int userId = int.Parse(userIdString);
 
             var newTickets = new List<Ticket>();
             foreach (var seat in request.Seats)
@@ -74,7 +79,7 @@ namespace Cinema.Web.Controllers
                     Price = session.Price,
                     PurchaseDate = DateTime.UtcNow,
                     Status = TicketStatus.Booked,
-                    UserId = tempUserid
+                    UserId = userId
                 });
             }
 

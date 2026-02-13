@@ -1,0 +1,54 @@
+﻿@model Cinema.Web.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Реєстрація";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card bg-dark text-white border-secondary shadow-lg" style="width: 500px;">
+        <div class="card-header border-secondary text-center">
+            <h3>📝 Реєстрація</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Register" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FirstName" class="form-label">Ім'я</label>
+                        <input asp-for="FirstName" class="form-control bg-secondary text-white border-0" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="LastName" class="form-label">Прізвище</label>
+                        <input asp-for="LastName" class="form-control bg-secondary text-white border-0" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Пароль</label>
+                    <input asp-for="Password" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ConfirmPassword" class="form-label">Підтвердження паролю</label>
+                    <input asp-for="ConfirmPassword" class="form-control bg-secondary text-white border-0" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 fw-bold">Створити акаунт</button>
+            </form>
+        </div>
+        <div class="card-footer border-secondary text-center">
+            <small>Вже є акаунт? <a asp-action="Login" class="text-warning">Увійти</a></small>
+        </div>
+    </div>
+</div>
